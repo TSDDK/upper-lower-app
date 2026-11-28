@@ -2,7 +2,7 @@
 <html lang="da">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Upper/Lower" />
@@ -23,6 +23,8 @@
       --blue-soft: rgba(88, 166, 255, 0.16);
       --amber: #d29922;
       --amber-soft: rgba(210, 153, 34, 0.18);
+      --purple: #bc8cff;
+      --purple-soft: rgba(188, 140, 255, 0.16);
       --danger: #f85149;
       --radius: 14px;
       --safe-top: env(safe-area-inset-top, 0px);
@@ -31,13 +33,17 @@
 
     * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 
+    html, body {
+      overflow-x: hidden;
+    }
+
     body {
       margin: 0;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
       background: var(--bg);
       color: var(--text);
       padding-top: calc(var(--safe-top) + 12px);
-      padding-bottom: calc(var(--safe-bottom) + 110px);
+      padding-bottom: calc(var(--safe-bottom) + 120px);
       line-height: 1.4;
     }
 
@@ -94,7 +100,7 @@
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 10px 14px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       gap: 10px;
     }
 
@@ -102,6 +108,8 @@
       border-color: var(--amber);
       background: var(--amber-soft);
     }
+
+    .deload-bar.hidden { display: none; }
 
     .deload-text {
       font-size: 13px;
@@ -166,16 +174,21 @@
       background: #0d1117;
     }
 
+    .nav-wrap {
+      margin-bottom: 14px;
+    }
+
     .tabs {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 6px;
-      margin-bottom: 14px;
-      position: sticky;
-      top: calc(var(--safe-top) + 6px);
-      z-index: 20;
-      background: var(--bg);
-      padding: 4px 0;
+      margin-bottom: 6px;
+    }
+
+    .tabs-secondary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
     }
 
     .tab {
@@ -183,7 +196,7 @@
       border: 1px solid var(--border);
       color: var(--muted);
       border-radius: 11px;
-      padding: 9px 4px;
+      padding: 8px 4px;
       text-align: center;
       cursor: pointer;
       transition: 0.15s;
@@ -207,6 +220,32 @@
 
     .tab.active strong {
       color: var(--blue);
+    }
+
+    .tab.rehab.active {
+      background: var(--purple-soft);
+      border-color: var(--purple);
+      color: var(--purple);
+    }
+
+    .tab.rehab.active strong {
+      color: var(--purple);
+    }
+
+    .info-banner {
+      background: var(--purple-soft);
+      border: 1px solid var(--purple);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      margin-bottom: 12px;
+      font-size: 13px;
+      color: var(--text);
+    }
+
+    .info-banner strong {
+      display: block;
+      color: var(--purple);
+      margin-bottom: 4px;
     }
 
     .workout-meta {
@@ -261,6 +300,199 @@
       padding: 0;
     }
 
+    .rest-pill {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--blue);
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+      cursor: pointer;
+    }
+
+    .del-ex-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--danger);
+      border-radius: 8px;
+      padding: 4px 8px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .ex-target {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
+
+    .badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .badge {
+      font-size: 11px;
+      padding: 3px 8px;
+      border-radius: 7px;
+      background: var(--surface-2);
+      color: var(--muted);
+    }
+
+    .badge.prev {
+      background: var(--blue-soft);
+      color: #9ecbff;
+    }
+
+    .badge.up {
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .set-grid-head, .set-row {
+      display: grid;
+      grid-template-columns: 30px 1fr 1fr 62px 44px;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .set-grid-head {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 6px;
+      text-align: center;
+    }
+
+    .set-row {
+      margin-bottom: 7px;
+    }
+
+    .set-num {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* 16px forhindrer iOS Safari auto-zoom og scroll-hop ved indtastning */
+    input, select, textarea {
+      font-size: 16px;
+      font-family: inherit;
+    }
+
+    .set-row input {
+      width: 100%;
+      height: 42px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      color: var(--text);
+      font-size: 16px;
+      font-weight: 600;
+      text-align: center;
+      outline: none;
+    }
+
+    .set-row input:focus, .field input:focus, .field select:focus, .field textarea:focus {
+      border-color: var(--blue);
+    }
+
+    .set-row.done input {
+      border-color: rgba(63, 185, 80, 0.45);
+      background: rgba(63, 185, 80, 0.08);
+    }
+
+    .check-btn {
+      height: 42px;
+      width: 44px;
+      border-radius: 9px;
+      border: 1px solid var(--border);
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 18px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .set-row.done .check-btn {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0d1117;
+    }
+
+    .field {
+      margin-bottom: 12px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      font-weight: 600;
+    }
+
+    .field input, .field select, .field textarea {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: var(--text);
+      padding: 10px 12px;
+      outline: none;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+
+    .pace-box {
+      background: var(--blue-soft);
+      border: 1px solid var(--blue);
+      color: #9ecbff;
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 14px;
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 12px;
+    }
+
+    .add-ex-row {
+      display: grid;
+      grid-template-columns: 1fr 76px auto;
+      gap: 8px;
+      align-items: end;
+      margin-bottom: 10px;
+    }
+
+    .finish-btn {
+      width: 100%;
+      padding: 15px;
+      border-radius: var(--radius);
+      border: none;
+      background: var(--accent);
+      color: #0d1117;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 6px;
+    }
+
+    .finish-btn:active { opacity: 0.85; }
+
     .ex-svg-box {
       background: #0d1117;
       border: 1px solid var(--border);
@@ -303,135 +535,6 @@
       font-size: 14px;
       font-weight: 600;
     }
-
-    .rest-pill {
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      color: var(--blue);
-      font-size: 11px;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 999px;
-      white-space: nowrap;
-      cursor: pointer;
-    }
-
-    .ex-target {
-      font-size: 12px;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .badges {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      margin-bottom: 10px;
-    }
-
-    .badge {
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 7px;
-      background: var(--surface-2);
-      color: var(--muted);
-    }
-
-    .badge.prev {
-      background: var(--blue-soft);
-      color: #9ecbff;
-    }
-
-    .badge.up {
-      background: var(--accent-soft);
-      color: var(--accent);
-      font-weight: 600;
-    }
-
-    .set-grid-head, .set-row {
-      display: grid;
-      grid-template-columns: 32px 1fr 1fr 64px 44px;
-      gap: 6px;
-      align-items: center;
-    }
-
-    .set-grid-head {
-      font-size: 11px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 6px;
-      text-align: center;
-    }
-
-    .set-row {
-      margin-bottom: 7px;
-    }
-
-    .set-num {
-      font-size: 13px;
-      font-weight: 700;
-      color: var(--muted);
-      text-align: center;
-    }
-
-    .set-row input {
-      width: 100%;
-      height: 40px;
-      background: var(--surface-2);
-      border: 1px solid var(--border);
-      border-radius: 9px;
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 600;
-      text-align: center;
-      outline: none;
-    }
-
-    .set-row input:focus {
-      border-color: var(--blue);
-    }
-
-    .set-row.done input {
-      border-color: rgba(63, 185, 80, 0.45);
-      background: rgba(63, 185, 80, 0.08);
-    }
-
-    .check-btn {
-      height: 40px;
-      width: 44px;
-      border-radius: 9px;
-      border: 1px solid var(--border);
-      background: var(--surface-2);
-      color: var(--muted);
-      font-size: 18px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .set-row.done .check-btn {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #0d1117;
-    }
-
-    .finish-btn {
-      width: 100%;
-      padding: 15px;
-      border-radius: var(--radius);
-      border: none;
-      background: var(--accent);
-      color: #0d1117;
-      font-size: 16px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-top: 6px;
-    }
-
-    .finish-btn:active { opacity: 0.85; }
 
     .timer-bar {
       position: fixed;
@@ -531,7 +634,7 @@
 
     .action-btn {
       flex: 1;
-      min-width: 130px;
+      min-width: 120px;
       background: var(--surface-2);
       border: 1px solid var(--border);
       color: var(--text);
@@ -605,7 +708,7 @@
     <header>
       <div>
         <h1>Upper / Lower</h1>
-        <div class="subtitle" id="headerSub">Styrke & Hypertrofi · 4 pas/uge</div>
+        <div class="subtitle">Styrke, Løb & Skulder-genoptræning</div>
       </div>
       <div class="header-actions">
         <button class="icon-btn" id="guideBtn">Guide</button>
@@ -624,16 +727,12 @@
       </label>
     </div>
 
-    <div class="tabs" id="tabs"></div>
-
-    <div class="workout-meta">
-      <span id="workoutFocus"></span>
-      <span id="progressCount"></span>
+    <div class="nav-wrap">
+      <div class="tabs" id="mainTabs"></div>
+      <div class="tabs-secondary" id="subTabs"></div>
     </div>
 
-    <div id="exerciseList"></div>
-
-    <button class="finish-btn" id="finishBtn">Afslut og gem pas</button>
+    <div id="mainContent"></div>
   </div>
 
   <div class="timer-bar" id="timerBar">
@@ -673,11 +772,11 @@
         <button class="icon-btn" id="closeGuide">Luk</button>
       </div>
       <ul class="guide-list">
-        <li><strong>Deload (aflastningsuge):</strong> Slå Deload til i uge 1 (kør kun Upper A, Lower A og Upper B) samt hver 5. til 6. uge. Sæt halveres og RIR sættes til 3 til 4.</li>
+        <li><strong>Deload (aflastningsuge):</strong> Slå Deload til i uge 1 (kør kun Dag 1, Dag 2 og Dag 3) samt hver 5. til 6. uge. Sæt halveres og RIR sættes til 3 til 4.</li>
         <li><strong>RIR (Repetitions in Reserve):</strong> Antal gentagelser tilbage i tanken før udmattelse. RIR 2 på basisøvelser giver maksimal styrke med lav træthed.</li>
+        <li><strong>Skulderhensyn:</strong> Ved venstresidig skuldersvaghed/irritation bør du køre Skulder-programmet 2 til 3 gange ugentligt (evt. som opvarmning eller på løbedage) og altid starte med venstre side.</li>
         <li><strong>Dobbelt progression:</strong> Når du rammer toppen af rep-intervallet i alle sæt ved målet for RIR, viser appen automatisk <em>Klar til +2,5 kg</em> næste gang.</li>
         <li><strong>Forkortelser:</strong> DB = håndvægt (dumbbell), Lat = bred rygmuskel (latissimus dorsi), RDL = rumænsk dødløft (Romanian Deadlift), reps = gentagelser.</li>
-        <li><strong>Pausetimer:</strong> Starter automatisk, når du trykker ✓ på et sæt. Du kan også trykke på pause-knappen øverst på hver øvelse.</li>
         <li><strong>Øvelsesillustrationer:</strong> Tryk på <strong>?</strong> ved en øvelse for at se illustration, 3 tekniske nøglepunkter og direkte videolink.</li>
       </ul>
     </div>
@@ -732,8 +831,8 @@
         day: "Dag 3",
         focus: "Vertikal / skrå pres & træk",
         exercises: [
-          { id: "ub_ohp", name: "Seated DB / Machine Shoulder Press", sets: 3, repMin: 6, repMax: 8, rir: 2, rest: 165, inc: 2, note: "Primær skulderstyrke (72t efter Upper A)" },
-          { id: "ub_pull", name: "Pull-ups eller Neutral Lat Pulldown", sets: 3, repMin: 6, repMax: 8, rir: 2, rest: 150, inc: 2.5, note: "Primær vertikal rygstyrke" },
+          { id: "ub_ohp", name: "Seated DB / Machine Shoulder Press", sets: 3, repMin: 6, repMax: 8, rir: 2, rest: 165, inc: 2, note: "Primær skulderstyrke (hvile efter Dag 1)" },
+          { id: "ub_pull", name: "Pull-ups eller Neutral Lat Pulldown", sets: 3, repMin: 6, repMax: 8, rir: 2, rest: 150, inc: 2.5, note: "Primær vertikal rygstyrke (fokus på symmetri)" },
           { id: "ub_chest", name: "Machine Chest Press / Dips", sets: 3, repMin: 8, repMax: 10, rir: 2, rest: 120, inc: 2.5, note: "Kontrolleret brystvolumen" },
           { id: "ub_row", name: "Seated Cable Row (smalt greb)", sets: 3, repMin: 8, repMax: 10, rir: 2, rest: 120, inc: 2.5, note: "Midtryg og lats" },
           { id: "ub_fly", name: "Pec Deck eller Cable Fly", sets: 2, repMin: 10, repMax: 12, rir: 1, rest: 90, inc: 2.5, note: "Brystisolation i strakt position" },
@@ -757,6 +856,19 @@
       }
     ];
 
+    const SHOULDER_REHAB = {
+      id: "shoulder_rehab",
+      name: "Skulder-genoptræning",
+      focus: "Rotator cuff & skulderbladskontrol (venstre side i fokus)",
+      exercises: [
+        { id: "sr_iso", name: "Isometrisk udadrotation (væg/kabel)", sets: 3, repMin: 25, repMax: 30, rir: 2, rest: 45, inc: 0, unitLabel: "Sek", note: "Smertelindrende senebelastning (infraspinatus)" },
+        { id: "sr_er", name: "Kabel/elastik udadrotation (albue i siden)", sets: 3, repMin: 12, repMax: 15, rir: 2, rest: 60, inc: 1, note: "Start altid med venstre; match højre til venstre" },
+        { id: "sr_wall", name: "Serratus Wall Slide (skumrulle/elastik)", sets: 3, repMin: 10, repMax: 12, rir: 2, rest: 60, inc: 0, note: "Opadrotation af skulderblad, skaber plads i leddet" },
+        { id: "sr_scap", name: "Scapular Pull-ups (strakte arme)", sets: 3, repMin: 8, repMax: 10, rir: 2, rest: 60, inc: 0, note: "Retter skævt træk i pull-ups (nedre trapezius)" },
+        { id: "sr_yt", name: "Prone Y-T eller Face Pull m. udadrotation", sets: 3, repMin: 12, repMax: 15, rir: 2, rest: 60, inc: 1, note: "Bagskulder og nedre trapezius uden smerte" }
+      ]
+    };
+
     const SVG_ICONS = {
       bench: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="70" y="96" width="160" height="12" rx="4" fill="#30363d"/>
@@ -771,6 +883,18 @@
         <path d="M174 72 L174 36 M168 43 L174 36 L180 43 M168 65 L174 72 L180 65" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         <text x="160" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Skulderblade samlet · albuer ca. 45 grader</text>
       </svg>`,
+      machine_chest: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="96" y="44" width="12" height="62" rx="4" fill="#30363d"/>
+        <rect x="96" y="102" width="58" height="10" rx="4" fill="#30363d"/>
+        <circle cx="122" cy="48" r="10" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="122" y1="60" x2="122" y2="100" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="122" y1="100" x2="162" y2="100" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="162" y1="100" x2="162" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="126" y1="74" x2="196" y2="74" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <rect x="196" y="60" width="8" height="28" rx="3" fill="#3fb950"/>
+        <path d="M168 54 L212 54 M205 48 L212 54 L205 60" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="160" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Siddende maskinpres · kontrolleret 2 sek sænkning</text>
+      </svg>`,
       incline: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="88" y1="108" x2="155" y2="66" stroke="#30363d" stroke-width="11" stroke-linecap="round"/>
         <line x1="155" y1="108" x2="210" y2="108" stroke="#30363d" stroke-width="11" stroke-linecap="round"/>
@@ -783,6 +907,16 @@
         <path d="M204 68 L204 34 M198 41 L204 34 L210 41" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         <text x="160" y="18" text-anchor="middle" fill="#8b949e" font-size="11">30 grader skråbænk · pres lodret op</text>
       </svg>`,
+      chest_supported_row: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="118" y1="112" x2="182" y2="56" stroke="#30363d" stroke-width="12" stroke-linecap="round"/>
+        <circle cx="186" cy="46" r="10" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="174" y1="56" x2="128" y2="94" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="128" y1="94" x2="96" y2="134" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="162" y1="68" x2="178" y2="106" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="180" cy="112" r="7" fill="#3fb950"/>
+        <path d="M214 106 L214 68 M208 75 L214 68 L220 75" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="160" y="18" text-anchor="middle" fill="#8b949e" font-size="11">Bryst mod puden · træk albuer bagud uden lændesvaj</text>
+      </svg>`,
       row: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <rect x="92" y="106" width="95" height="10" rx="4" fill="#30363d"/>
         <circle cx="122" cy="48" r="10" stroke="#e6edf3" stroke-width="3"/>
@@ -793,7 +927,7 @@
         <line x1="178" y1="78" x2="245" y2="78" stroke="#8b949e" stroke-width="2" stroke-dasharray="4 4"/>
         <rect x="245" y="54" width="12" height="54" rx="3" fill="#30363d"/>
         <path d="M214 60 L172 60 M179 54 L172 60 L179 66" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-        <text x="160" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Træk albuerne bagud · saml skulderbladene</text>
+        <text x="160" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Træk håndtaget til navlen · neutral ryg</text>
       </svg>`,
       pulldown: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="115" y1="30" x2="205" y2="30" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
@@ -805,6 +939,17 @@
         <rect x="132" y="114" width="56" height="9" rx="4" fill="#30363d"/>
         <path d="M226 42 L226 84 M220 77 L226 84 L232 77" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         <text x="160" y="142" text-anchor="middle" fill="#8b949e" font-size="11">Træk albuerne ned mod hofterne til øvre bryst</text>
+      </svg>`,
+      pullup: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="92" y1="26" x2="228" y2="26" stroke="#30363d" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="160" cy="58" r="10" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="160" y1="70" x2="160" y2="108" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="160" y1="108" x2="152" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="160" y1="108" x2="168" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="160" y1="74" x2="134" y2="28" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="160" y1="74" x2="186" y2="28" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <path d="M218 86 L218 42 M212 49 L218 42 L224 49" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="160" y="146" text-anchor="middle" fill="#8b949e" font-size="11">Neutralt greb · symmetrisk træk op med begge skuldre</text>
       </svg>`,
       lateral: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="160" cy="38" r="10" stroke="#e6edf3" stroke-width="3"/>
@@ -830,18 +975,32 @@
         <text x="160" y="18" text-anchor="middle" fill="#8b949e" font-size="11">Træk rebet mod panden · rotér hænder udad</text>
       </svg>`,
       arms: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="115" cy="40" r="9" stroke="#e6edf3" stroke-width="3"/>
-        <line x1="115" y1="50" x2="115" y2="96" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
-        <line x1="115" y1="96" x2="115" y2="134" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
-        <line x1="115" y1="60" x2="115" y2="82" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
-        <line x1="115" y1="82" x2="142" y2="98" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
-        <circle cx="208" cy="40" r="9" stroke="#e6edf3" stroke-width="3"/>
-        <line x1="208" y1="50" x2="208" y2="96" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
-        <line x1="208" y1="96" x2="208" y2="134" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
-        <line x1="208" y1="60" x2="208" y2="84" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
-        <line x1="208" y1="84" x2="232" y2="62" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
-        <text x="118" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Triceps (stræk)</text>
-        <text x="210" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Biceps (bøj)</text>
+        <circle cx="110" cy="40" r="9" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="110" y1="50" x2="110" y2="96" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="110" y1="96" x2="110" y2="134" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="110" y1="60" x2="110" y2="82" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="110" y1="82" x2="138" y2="100" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+        <line x1="184" y1="108" x2="222" y2="62" stroke="#30363d" stroke-width="8" stroke-linecap="round"/>
+        <circle cx="218" cy="46" r="9" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="214" y1="56" x2="196" y2="96" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="210" y1="64" x2="210" y2="96" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="210" y1="96" x2="232" y2="76" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+        <text x="112" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Pushdown (ned)</text>
+        <text x="214" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Incline Curl (skrå bænk)</text>
+      </svg>`,
+      overhead_arms: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="110" cy="54" r="9" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="110" y1="64" x2="110" y2="104" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="110" y1="104" x2="110" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="110" y1="70" x2="116" y2="38" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="116" y1="38" x2="146" y2="28" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="210" cy="44" r="9" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="210" y1="54" x2="210" y2="98" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="210" y1="98" x2="210" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="210" y1="64" x2="210" y2="88" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="210" y1="88" x2="234" y2="66" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+        <text x="114" y="16" text-anchor="middle" fill="#8b949e" font-size="11">Overhead Triceps</text>
+        <text x="212" y="16" text-anchor="middle" fill="#8b949e" font-size="11">Hammer Curl (neutral)</text>
       </svg>`,
       squat: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="70" y1="136" x2="250" y2="136" stroke="#30363d" stroke-width="3"/>
@@ -853,6 +1012,18 @@
         <path d="M214 52 L214 102 M208 59 L214 52 L220 59 M208 95 L214 102 L220 95" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         <text x="160" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Knæ over tæer · kontrolleret dybde · neutral ryg</text>
       </svg>`,
+      split_squat: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="65" y1="136" x2="255" y2="136" stroke="#30363d" stroke-width="3"/>
+        <rect x="86" y="102" width="44" height="10" rx="3" fill="#30363d"/>
+        <circle cx="176" cy="42" r="10" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="174" y1="54" x2="166" y2="92" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="166" y1="92" x2="206" y2="102" stroke="#58a6ff" stroke-width="5" stroke-linecap="round"/>
+        <line x1="206" y1="102" x2="202" y2="135" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="166" y1="92" x2="136" y2="118" stroke="#8b949e" stroke-width="4" stroke-linecap="round"/>
+        <line x1="136" y1="118" x2="114" y2="102" stroke="#8b949e" stroke-width="4" stroke-linecap="round"/>
+        <path d="M234 56 L234 102 M228 95 L234 102 L240 95 M228 63 L234 56 L240 63" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="160" y="18" text-anchor="middle" fill="#8b949e" font-size="11">Bagerste fod på bænk · sænk lodret ned på forreste ben</text>
+      </svg>`,
       rdl: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="70" y1="136" x2="250" y2="136" stroke="#30363d" stroke-width="3"/>
         <circle cx="192" cy="60" r="10" stroke="#e6edf3" stroke-width="3"/>
@@ -863,6 +1034,19 @@
         <circle cx="168" cy="116" r="8" fill="#3fb950"/>
         <path d="M114 82 L88 82 M95 76 L88 82 L95 88" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
         <text x="160" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Skub hoften langt bagud · vægt tæt på skinneben</text>
+      </svg>`,
+      trap_bar: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="70" y1="136" x2="250" y2="136" stroke="#30363d" stroke-width="3"/>
+        <circle cx="160" cy="40" r="10" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="160" y1="52" x2="150" y2="88" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="150" y1="88" x2="176" y2="106" stroke="#58a6ff" stroke-width="5" stroke-linecap="round"/>
+        <line x1="176" y1="106" x2="166" y2="135" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="158" y1="60" x2="160" y2="104" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <rect x="134" y="102" width="52" height="8" rx="3" fill="#3fb950"/>
+        <circle cx="130" cy="118" r="15" stroke="#3fb950" stroke-width="3"/>
+        <circle cx="190" cy="118" r="15" stroke="#3fb950" stroke-width="3"/>
+        <path d="M224 102 L224 54 M218 61 L224 54 L230 61" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="160" y="18" text-anchor="middle" fill="#8b949e" font-size="11">Stå inde i rammen · højt bryst · pres gulvet væk</text>
       </svg>`,
       legpress: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="86" y1="120" x2="136" y2="90" stroke="#30363d" stroke-width="10" stroke-linecap="round"/>
@@ -925,7 +1109,7 @@
         <path d="M210 96 Q186 104 170 94" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" fill="none"/>
         <text x="160" y="20" text-anchor="middle" fill="#8b949e" font-size="11">Stort kontrolleret stræk · kram armene sammen</text>
       </svg>`,
-      core: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+      core_hang: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
         <line x1="120" y1="26" x2="200" y2="26" stroke="#30363d" stroke-width="5" stroke-linecap="round"/>
         <circle cx="160" cy="54" r="9" stroke="#e6edf3" stroke-width="3"/>
         <line x1="160" y1="64" x2="160" y2="96" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
@@ -933,48 +1117,95 @@
         <line x1="160" y1="64" x2="176" y2="28" stroke="#58a6ff" stroke-width="3.5" stroke-linecap="round"/>
         <line x1="160" y1="96" x2="202" y2="86" stroke="#3fb950" stroke-width="4.5" stroke-linecap="round"/>
         <path d="M206 118 Q216 104 208 90" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" fill="none"/>
-        <text x="160" y="140" text-anchor="middle" fill="#8b949e" font-size="11">Spænd maven · rul bækkenet kontrolleret op</text>
+        <text x="160" y="140" text-anchor="middle" fill="#8b949e" font-size="11">Hængende benløft: rul bækkenet kontrolleret op</text>
+      </svg>`,
+      ab_wheel_pallof: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="36" y1="132" x2="284" y2="132" stroke="#30363d" stroke-width="3"/>
+        <rect x="44" y="42" width="10" height="88" rx="3" fill="#30363d"/>
+        <line x1="54" y1="74" x2="106" y2="74" stroke="#8b949e" stroke-width="2" stroke-dasharray="4 4"/>
+        <circle cx="106" cy="50" r="8" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="106" y1="60" x2="106" y2="96" stroke="#e6edf3" stroke-width="4.5" stroke-linecap="round"/>
+        <line x1="106" y1="96" x2="98" y2="130" stroke="#e6edf3" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="106" y1="96" x2="114" y2="130" stroke="#e6edf3" stroke-width="3.5" stroke-linecap="round"/>
+        <line x1="106" y1="72" x2="136" y2="72" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="242" cy="84" r="8" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="234" y1="88" x2="188" y2="104" stroke="#e6edf3" stroke-width="4.5" stroke-linecap="round"/>
+        <line x1="188" y1="104" x2="186" y2="130" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="230" y1="90" x2="256" y2="122" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="262" cy="124" r="8" stroke="#3fb950" stroke-width="3"/>
+        <text x="98" y="22" text-anchor="middle" fill="#8b949e" font-size="11">Pallof Press (stående)</text>
+        <text x="230" y="22" text-anchor="middle" fill="#8b949e" font-size="11">Ab Wheel (knælende)</text>
+      </svg>`,
+      shoulder_er: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="64" y="34" width="10" height="98" rx="3" fill="#30363d"/>
+        <line x1="74" y1="84" x2="178" y2="84" stroke="#8b949e" stroke-width="2" stroke-dasharray="4 4"/>
+        <circle cx="176" cy="40" r="10" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="176" y1="52" x2="176" y2="96" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="176" y1="96" x2="164" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="176" y1="96" x2="188" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="176" y1="62" x2="176" y2="84" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="176" y1="84" x2="216" y2="84" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+        <path d="M188 70 Q210 66 222 80" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+        <text x="160" y="18" text-anchor="middle" fill="#8b949e" font-size="11">Albue låst i 90 grader ved siden · rotér underarm udad</text>
+      </svg>`,
+      wall_slide: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="218" y="24" width="12" height="114" rx="2" fill="#30363d"/>
+        <circle cx="156" cy="48" r="10" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="156" y1="60" x2="156" y2="104" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="156" y1="104" x2="146" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="156" y1="104" x2="166" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="160" y1="68" x2="196" y2="62" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="196" y1="62" x2="212" y2="34" stroke="#3fb950" stroke-width="4" stroke-linecap="round"/>
+        <path d="M242 82 L242 36 M236 43 L242 36 L248 43" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="160" y="18" text-anchor="middle" fill="#8b949e" font-size="11">Pres let ind mod væg · glid underarme roligt opad</text>
+      </svg>`,
+      scap_pullup: `<svg viewBox="0 0 320 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="96" y1="26" x2="224" y2="26" stroke="#30363d" stroke-width="6" stroke-linecap="round"/>
+        <circle cx="160" cy="64" r="10" stroke="#e6edf3" stroke-width="3"/>
+        <line x1="160" y1="76" x2="160" y2="112" stroke="#e6edf3" stroke-width="5" stroke-linecap="round"/>
+        <line x1="160" y1="112" x2="154" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="160" y1="112" x2="166" y2="136" stroke="#e6edf3" stroke-width="4" stroke-linecap="round"/>
+        <line x1="154" y1="78" x2="134" y2="28" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <line x1="166" y1="78" x2="186" y2="28" stroke="#58a6ff" stroke-width="4" stroke-linecap="round"/>
+        <path d="M126 76 L126 94 M120 88 L126 94 L132 88" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M194 76 L194 94 M188 88 L194 94 L200 88" stroke="#3fb950" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+        <text x="160" y="146" text-anchor="middle" fill="#8b949e" font-size="11">Strakte arme · træk kun skulderbladene symmetrisk ned</text>
       </svg>`
     };
 
     const EXERCISE_GUIDES = {
-      ua_bench: { icon: "bench", yt: "barbell bench press proper form technique", cues: ["Saml skulderbladene let ned og bagud i bænken for at beskytte skulderleddet.", "Sænk kontrolleret til midt/nedre bryst med albuerne i ca. 45 graders vinkel fra kroppen.", "Pres explosivt op og stop med 2 kontrollerede reps i reserve (RIR 2)."] },
-      ua_csrow: { icon: "row", yt: "chest supported row machine form technique", cues: ["Indstil brystpuden så du får fuldt stræk i ryggen i forreste position.", "Træk albuerne bagud mod hofterne og klem skulderbladene sammen i toppen.", "Undgå at løfte brystet fra puden (det holder lænden helt aflastet)."] },
-      ua_incdb: { icon: "incline", yt: "30 degree incline dumbbell press form", cues: ["Sæt bænken på ca. 30 grader (højere vinkel flytter arbejdet over på forreste skulder).", "Hold albuerne let ind mod kroppen og sænk håndvægtene kontrolleret ned i stræk.", "Pres op i en let bue uden at slå håndvægtene hårdt sammen i toppen."] },
-      ua_latpd: { icon: "pulldown", yt: "lat pulldown proper form technique", cues: ["Læn overkroppen let bagud (10 til 15 grader) og træk stangen ned mod øvre bryst.", "Tænk på at trække albuerne ned mod hofterne frem for at trække med biceps.", "Lad skuldrene strække roligt op i toppen af hver gentagelse."] },
-      ua_clat: { icon: "lateral", yt: "cable lateral raise form technique", cues: ["Indstil kablet i hofte- eller håndledshøjde for jævn modstand i hele bevægelsen.", "Løft armen skråt ud til siden (ca. 30 grader frem for kroppen) op til skulderhøjde.", "Hold skulderen sænket væk fra øret og sænk langsomt tilbage."] },
-      ua_face: { icon: "facepull", yt: "cable face pull proper form", cues: ["Indstil kablet i ansigtshøjde med reb-greb (tommelfingrene pegende mod dig selv).", "Træk rebet mod panden mens du trækker albuerne ud og roterer hænderne udad.", "Hold en kort pause i bagerste position for maksimal effekt på bagskulder og rotator cuff."] },
+      ua_bench: { icon: "bench", yt: "barbell bench press proper form technique", cues: ["Saml skulderbladene let ned og bagud i bænken for at beskytte skulderleddet.", "Sænk kontrolleret til midt/nedre bryst med albuerne i ca. 45 graders vinkel (ved venstre skulderirritation: brug evt. maskine eller neutral-greb håndvægte).", "Pres kontrolleret op uden at løfte venstre skulder frem; stop ved RIR 2."] },
+      ua_csrow: { icon: "chest_supported_row", yt: "chest supported row machine form technique", cues: ["Indstil brystpuden så du får fuldt stræk i ryggen i forreste position.", "Træk albuerne bagud mod hofterne og klem skulderbladene symmetrisk sammen.", "Hold brystet fast mod puden under hele sættet, så lænden aflastes helt."] },
+      ua_incdb: { icon: "incline", yt: "30 degree incline dumbbell press form", cues: ["Sæt bænken på ca. 30 grader (højere vinkel belaster forreste skulder unødigt).", "Hold håndvægtene i let neutral/45 graders vinkel for skuldervenlig bane.", "Pres op i en rolig bue uden at slå håndvægtene sammen i toppen."] },
+      ua_latpd: { icon: "pulldown", yt: "neutral grip lat pulldown proper form", cues: ["Brug gerne neutralt greb (skulderbredde), som er mest skånsomt for venstre skulder.", "Start trækket med at sænke begge skulderblade ligeligt, og træk albuerne ned mod hofterne.", "Lad skuldrene strække kontrolleret op i toppen uden at tabe spændingen."] },
+      ua_clat: { icon: "lateral", yt: "cable lateral raise form technique", cues: ["Indstil kablet i håndledshøjde for jævn modstand gennem hele bevægelsen.", "Løft armen skråt ud (ca. 30 grader frem for kroppen) op til skulderhøjde.", "Hold skulderen sænket væk fra øret og sænk roligt tilbage."] },
+      ua_face: { icon: "facepull", yt: "cable face pull proper form", cues: ["Indstil kablet i ansigtshøjde med reb-greb (tommelfingrene pegende mod dig selv).", "Træk rebet mod panden mens du fører albuerne ud og roterer hænderne udad.", "Hold en kort pause i bagerste position for maksimal effekt på bagskulder og rotator cuff."] },
       ua_arms: { icon: "arms", yt: "cable triceps pushdown and incline dumbbell curl form", cues: ["Triceps pushdown: Hold overarmene låst langs siden og stræk albuen helt ud.", "Incline DB Curl: Sid på 45 graders bænk med armene hængende bag kroppen for fuldt stræk.", "Kør dem skiftevis som superset med ca. 60 sek pause efter begge øvelser."] },
       la_squat: { icon: "squat", yt: "hack squat machine proper form", cues: ["Placér fødderne midt/lavt på pladen i skulderbredde med tæerne let udad.", "Sænk roligt ned til fuld komfortabel dybde med knæene i samme retning som tæerne.", "Pres jævnt gennem hele foden og hold ryg og hoved i kontakt med puden."] },
-      la_rdl: { icon: "rdl", yt: "romanian deadlift proper form technique", cues: ["Start stående med let bøjede knæ (fast vinkel gennem hele øvelsen).", "Skub hoften langt bagud mens vægten glider helt tæt langs lår og skinneben.", "Vend bevægelsen når hoften ikke længere kan komme bagud (typisk lige under knæet)."] },
-      la_bss: { icon: "squat", yt: "bulgarian split squat form technique", cues: ["Placér bagerste fod på en bænk og tag et langt skridt frem med forreste fod.", "Sænk dig kontrolleret ned med overkroppen let fremadlænet for god balde- og låraktivering.", "Brug evt. benpres i stedet på dage hvor benene føles meget trætte af løb."] },
-      la_curl: { icon: "legcurl", yt: "seated lying leg curl form", cues: ["Justér sæde og ankelpude så knæleddet flugter præcist med maskinens omdrejningspunkt.", "Bøj benene helt igennem og sænk langsomt (2 til 3 sek) tilbage til fuldt stræk.", "Hold hoften stabilt nede i sædet under hele sættet."] },
-      la_calf: { icon: "calf", yt: "standing calf raise proper form", cues: ["Sænk hælene helt ned i dybt stræk og hold en tydelig 1-sekunds pause i bunden.", "Pres højt op på forfoden uden at hoppe/bounce i bunden.", "Kontrolleret tempo styrker både lægmuskel og achillessene til løb."] },
-      la_core: { icon: "core", yt: "hanging leg raise cable crunch form", cues: ["Fokusér på at rulle bækkenet op mod ribbenene frem for blot at svinge benene.", "Hold skuldrene aktive og undgå momentum i bunden.", "Ved Cable Crunch: krum brystkassen ned mod knæene med spændt mave."] },
-      ub_ohp: { icon: "ohp", yt: "seated dumbbell shoulder press form", cues: ["Indstil ryglænet ét hak tilbage fra helt lodret (ca. 75 til 80 grader).", "Hold albuerne ca. 30 grader frem for kroppen (skåner skulderleddet).", "Pres kontrolleret op uden at svaje kraftigt i lænden; stop ved RIR 2."] },
-      ub_pull: { icon: "pulldown", yt: "neutral grip pull up lat pulldown form", cues: ["Brug neutralt greb (håndflader mod hinanden) for mest skuldervenlig belastning.", "Start trækket ved at sænke skulderbladene og træk brystet mod stangen.", "Sænk kontrolleret helt ned til strakte arme mellem hver rep."] },
-      ub_chest: { icon: "bench", yt: "machine chest press proper form", cues: ["Justér sædehøjden så håndtagene sidder ud for midt/nedre bryst.", "Hold skulderbladene samlet mod ryglænet under hele presset.", "Kontrolleret 2-sekunders sænkning giver stærkt bryststimulus uden skulderirritation."] },
-      ub_row: { icon: "row", yt: "seated cable row close grip form", cues: ["Sid oprejst med let bøjede knæ og neutral ryg (undgå at svinge overkroppen).", "Træk håndtaget ind mod navlen og før albuerne tæt langs kroppen.", "Lad armene og skulderbladene glide kontrolleret frem til fuldt stræk."] },
-      ub_fly: { icon: "fly", yt: "pec deck machine fly proper form", cues: ["Indstil sædet så armene er i brysthøjde med et lille, fast knæk i albuerne.", "Før armene roligt tilbage til et tydeligt, behageligt stræk i brystet (uden skuldersmerte).", "Klem hænderne sammen foran brystet i en rolig bue."] },
+      la_rdl: { icon: "rdl", yt: "romanian deadlift proper form technique", cues: ["Start stående med let bøjede knæ (fast knævinkel gennem hele øvelsen).", "Skub hoften langt bagud mens vægten glider helt tæt langs lår og skinneben.", "Vend bevægelsen når hoften ikke længere kan komme bagud (typisk lige under knæet)."] },
+      la_bss: { icon: "split_squat", yt: "bulgarian split squat form technique", cues: ["Placér bagerste fod på en bænk og tag et stabilt skridt frem med forreste fod.", "Sænk dig lodret/kontrolleret ned med overkroppen let fremadlænet.", "Brug evt. benpres i stedet på dage hvor benene føles meget trætte af løb."] },
+      la_curl: { icon: "legcurl", yt: "seated lying leg curl form", cues: ["Justér sæde og ankelpude så knæleddet flugter præcist med maskinens akse.", "Bøj benene helt igennem og sænk langsomt (2 til 3 sek) tilbage til fuldt stræk.", "Hold hoften stabilt nede i sædet under hele sættet."] },
+      la_calf: { icon: "calf", yt: "standing calf raise proper form", cues: ["Sænk hælene helt ned i dybt stræk og hold 1 sekunds tydelig pause i bunden.", "Pres højt op på forfoden uden at hoppe/bounce i bunden.", "Kontrolleret tempo styrker både lægmuskel og achillessene til løb."] },
+      la_core: { icon: "core_hang", yt: "hanging leg raise cable crunch form", cues: ["Hængende benløft: Rul bækkenet op mod ribbenene frem for blot at svinge benene.", "Ved skulderirritation i hæng: vælg i stedet knælende Cable Crunch.", "Undgå momentum og hold spændingen i maven gennem hele bevægelsen."] },
+      ub_ohp: { icon: "ohp", yt: "seated dumbbell shoulder press form", cues: ["Indstil ryglænet ét hak tilbage fra helt lodret (ca. 75 til 80 grader).", "Hold albuerne ca. 30 grader frem for kroppen og pres kun i smertefri bane.", "Stop ved RIR 2 og undgå lændesvaj (vælg maskine hvis venstre skulder er træt)."] },
+      ub_pull: { icon: "pullup", yt: "neutral grip pull up proper form", cues: ["Brug neutralt greb (håndflader mod hinanden) og hold øje med symmetrisk træk.", "Hvis venstre side halter eller gør ondt: skift midlertidigt til neutral Lat Pulldown eller assisteret pull-up.", "Start hver gentagelse ved at sænke begge skulderblade ligeligt."] },
+      ub_chest: { icon: "machine_chest", yt: "machine chest press proper form", cues: ["Justér sædehøjden så håndtagene sidder ud for midt/nedre bryst.", "Hold begge skulderblade stabilt mod ryglænet under hele presset.", "Kontrolleret 2-sekunders sænkning giver stærkt bryststimulus uden skulderirritation."] },
+      ub_row: { icon: "row", yt: "seated cable row close grip form", cues: ["Sid oprejst med let bøjede knæ og neutral ryg (undgå at svinge overkroppen).", "Træk håndtaget ind mod navlen og før albuerne tæt langs kroppen.", "Lad skulderbladene glide kontrolleret frem til fuldt stræk mellem hver rep."] },
+      ub_fly: { icon: "fly", yt: "pec deck machine fly proper form", cues: ["Indstil sædet så armene er i brysthøjde med et lille, fast knæk i albuerne.", "Før kun armene så langt tilbage som venstre skulder tillader uden smerte.", "Klem hænderne sammen foran brystet i en rolig bue."] },
       ub_lat: { icon: "lateral", yt: "dumbbell lateral raise form", cues: ["Stå med let foroverbøjet overkrop og løft håndvægtene skråt ud til siden.", "Før bevægelsen med albuerne op til skulderhøjde uden at svinge med hoften.", "Sænk langsomt ned for maksimal spænding i sideskulderen."] },
-      ub_arms: { icon: "arms", yt: "overhead cable triceps extension hammer curl form", cues: ["Overhead Triceps Extension: Før albuerne over hovedet for maksimalt stræk i triceps' lange hoved.", "Hammer Curl: Neutralt greb (tommelfinger op) med faste albuer langs siden.", "Køres skiftevis som superset med ca. 60 sek pause mellem runderne."] },
-      lb_trap: { icon: "rdl", yt: "trap bar deadlift proper form", cues: ["Brug de høje håndtag hvis du vil have mindst mulig lændebelastning.", "Spænd op i maven, hold brystet højt og pres gulvet væk med benene.", "Sænk kontrolleret tilbage til gulvet mellem hver rep (ingen bounce)."] },
+      ub_arms: { icon: "overhead_arms", yt: "overhead cable triceps extension hammer curl form", cues: ["Overhead Triceps Extension: Før albuerne over hovedet for maksimalt stræk i triceps' lange hoved.", "Hammer Curl: Neutralt greb (tommelfinger op) med faste albuer langs siden.", "Køres skiftevis som superset med ca. 60 sek pause mellem runderne."] },
+      lb_trap: { icon: "trap_bar", yt: "trap bar deadlift proper form", cues: ["Stå midt i rammen og brug de høje håndtag for lavest mulig lændebelastning.", "Spænd op i maven, hold brystet højt og pres gulvet væk med benene.", "Sænk kontrolleret helt tilbage til gulvet mellem hver rep (ingen bounce)."] },
       lb_press: { icon: "legpress", yt: "45 degree leg press form technique", cues: ["Placér fødderne midt/lavt på pladen for fokus på forlår.", "Sænk så dybt du kan uden at lænden og balderne løfter sig fra sædet.", "Undgå at overstrække/låse knæene helt i toppen."] },
       lb_scurl: { icon: "legcurl", yt: "seated leg curl proper form", cues: ["Lås lårpuden godt fast over lårene, så du sidder helt stabilt.", "Seated Leg Curl strækker baglåret over hoften og giver evidensbaseret høj hypertrofi.", "Bøj benene helt ind og sænk langsomt tilbage."] },
       lb_ext: { icon: "legext", yt: "leg extension machine proper form", cues: ["Flugt knæleddet med maskinens akse og placér ankelpuden lige over vristen.", "Stræk knæene helt ud og hold en kort pause i toppen.", "Sænk langsomt og kontrolleret for at beskytte knæskallen."] },
       lb_calf: { icon: "calf", yt: "seated standing calf raise form", cues: ["Fuld bevægebane: dybt stræk i bunden med 1 sekunds pause før hvert løft.", "Pres helt op på storetåballen i toppen.", "Stående rammer primært gastrocnemius, siddende mere soleus."] },
-      lb_core: { icon: "core", yt: "pallof press and ab wheel rollout form", cues: ["Pallof Press: Stå sidelæns til kabel i brysthøjde, pres hænderne lige frem og modstå rotation.", "Ab Wheel: Hold bækkenet let ind under dig (undgå svaj i lænden) og rul kun så langt ud du kan kontrollere.", "Kvalitet og spænding i core slår antal reps."] }
+      lb_core: { icon: "ab_wheel_pallof", yt: "pallof press and ab wheel rollout form", cues: ["Pallof Press (stående): Stå sidelæns til kabel i brysthøjde, pres hænderne lige frem og modstå rotation.", "Ab Wheel (knælende): Kip bækkenet let ind under dig (undgå lændesvaj) og rul kun så langt ud du kan kontrollere.", "Kvalitet og spænding i core slår antal reps."] },
+      sr_iso: { icon: "shoulder_er", yt: "isometric shoulder external rotation wall exercise", cues: ["Stå sidelæns ved en væg eller dørkarm med albuen bøjet 90 grader tæt ind til kroppen.", "Pres håndryggen blidt ud mod væggen (ca. 40 til 50 % kraft) i 25 til 30 sekunder uden smerte over 2 til 3/10.", "God smertelindrende seneaktivering før overkropstræning."] },
+      sr_er: { icon: "shoulder_er", yt: "cable external rotation shoulder rotator cuff", cues: ["Indstil kablet i albuehøjde og hold evt. et sammenrullet håndklæde mellem albue og krop.", "Rotér underarmen roligt udad (3 sek ud, 3 sek ind) uden at trække skulderen op mod øret.", "Start altid med venstre arm og lav præcis samme vægt og reps på højre for at rette asymmetrien."] },
+      sr_wall: { icon: "wall_slide", yt: "serratus wall slide foam roller shoulder rehab", cues: ["Stå foran en væg med underarmene (eller en skumrulle) mod væggen i skulderbredde.", "Skub let ind mod væggen (aktiverer serratus anterior) og glid armene roligt op i et let V.", "Hold ribbenene nede og stop før skulderen trækkes op mod ørerne."] },
+      sr_scap: { icon: "scap_pullup", yt: "scapular pull ups shoulder stability form", cues: ["Hæng i stangen (eller sid i Lat Pulldown med let vægt) med helt strakte albuer.", "Træk kun skulderbladene ned og let sammen, så kroppen løftes 3 til 5 cm (uden at bøje albuerne).", "Fokusér bevidst på at venstre skulderblad arbejder lige så aktivt som højre."] },
+      sr_yt: { icon: "facepull", yt: "prone Y T W or cable face pull external rotation", cues: ["Let vægt og fuld kontrol: træk skulderbladene ned og bagud med udadrotation i skulderen.", "Hold en tydelig 2-sekunders pause i slutpositionen på hver rep.", "Hold smerteniveauet på maks. 2 til 3/10; hvis smerten stiger næste dag, sænk belastningen."] }
     };
-
-    function openExerciseGuide(ex) {
-      const g = EXERCISE_GUIDES[ex.id];
-      if (!g) return;
-      document.getElementById("exModalTitle").textContent = ex.name;
-      document.getElementById("exModalSvg").innerHTML = SVG_ICONS[g.icon] || "";
-      document.getElementById("exModalCues").innerHTML = g.cues.map(c => `<li>${c}</li>`).join("");
-      document.getElementById("exModalYt").href = `https://www.youtube.com/results?search_query=${encodeURIComponent(g.yt)}`;
-      document.getElementById("exerciseModal").classList.add("open");
-    }
 
     const STORE_KEY = "td_upper_lower_v1";
 
@@ -985,12 +1216,19 @@
     function loadState() {
       try {
         const raw = localStorage.getItem(STORE_KEY);
-        if (raw) return JSON.parse(raw);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (!parsed.extraDraft) parsed.extraDraft = { note: "", exercises: [] };
+          if (!parsed.runDraft) parsed.runDraft = { date: "", km: "", mins: "", zone: "Zone 2 (rolig)", note: "" };
+          return parsed;
+        }
       } catch (e) {}
       return {
         activeTab: "upper_a",
         deload: true,
         drafts: {},
+        extraDraft: { note: "", exercises: [] },
+        runDraft: { date: "", km: "", mins: "", zone: "Zone 2 (rolig)", note: "" },
         history: []
       };
     }
@@ -1001,7 +1239,8 @@
       } catch (e) {}
     }
 
-    function getSetCount(ex) {
+    function getSetCount(ex, isRehab) {
+      if (isRehab) return ex.sets;
       return state.deload ? Math.max(1, Math.floor(ex.sets / 2)) : ex.sets;
     }
 
@@ -1016,8 +1255,8 @@
       return null;
     }
 
-    function isReadyToProgress(ex, lastLog) {
-      if (!lastLog || state.deload) return false;
+    function isReadyToProgress(ex, lastLog, isRehab) {
+      if (!lastLog || state.deload || isRehab || !ex.inc) return false;
       if (lastLog.sets.length < ex.sets) return false;
       return lastLog.sets.every(s => {
         const r = Number(s.reps);
@@ -1026,7 +1265,7 @@
       });
     }
 
-    function getDraft(workoutId, exId, setCount, lastLog) {
+    function getDraft(workoutId, exId, setCount, lastLog, isRehab) {
       if (!state.drafts[workoutId]) state.drafts[workoutId] = {};
       if (!state.drafts[workoutId][exId]) {
         const arr = [];
@@ -1035,7 +1274,7 @@
           arr.push({
             weight: prev ? prev.weight : "",
             reps: prev ? prev.reps : "",
-            rir: state.deload ? "3" : "",
+            rir: !isRehab && state.deload ? "3" : "",
             done: false
           });
         }
@@ -1044,62 +1283,94 @@
       const cur = state.drafts[workoutId][exId];
       while (cur.length < setCount) {
         const prev = cur[cur.length - 1] || {};
-        cur.push({ weight: prev.weight || "", reps: prev.reps || "", rir: state.deload ? "3" : "", done: false });
+        cur.push({ weight: prev.weight || "", reps: prev.reps || "", rir: !isRehab && state.deload ? "3" : "", done: false });
       }
       return cur.slice(0, setCount);
     }
 
-    function render() {
-      const deloadBar = document.getElementById("deloadBar");
-      const deloadToggle = document.getElementById("deloadToggle");
-      deloadToggle.checked = state.deload;
-      deloadBar.classList.toggle("active", state.deload);
-      document.getElementById("deloadTitle").textContent = state.deload
-        ? "Deload-uge aktiv (aflastning)"
-        : "Normaluge (Uge 2 til 6)";
-      document.getElementById("deloadDesc").textContent = state.deload
-        ? "Halv sætvolumen · Stop ved RIR 3 til 4 (kør kun 3 pas)"
-        : "Fuld sætvolumen · Dobbelt progression ved RIR 1 til 2";
+    function openExerciseGuide(ex) {
+      const g = EXERCISE_GUIDES[ex.id];
+      if (!g) return;
+      if (document.activeElement) document.activeElement.blur();
+      document.getElementById("exModalTitle").textContent = ex.name;
+      document.getElementById("exModalSvg").innerHTML = SVG_ICONS[g.icon] || "";
+      document.getElementById("exModalCues").innerHTML = g.cues.map(c => `<li>${c}</li>`).join("");
+      document.getElementById("exModalYt").href = `https://www.youtube.com/results?search_query=${encodeURIComponent(g.yt)}`;
+      document.getElementById("exerciseModal").classList.add("open");
+    }
 
-      const tabsEl = document.getElementById("tabs");
-      tabsEl.innerHTML = "";
+    function renderNav() {
+      const mainTabs = document.getElementById("mainTabs");
+      mainTabs.innerHTML = "";
       WORKOUTS.forEach(w => {
         const btn = document.createElement("button");
         btn.className = "tab" + (w.id === state.activeTab ? " active" : "");
         btn.innerHTML = `<strong>${w.name}</strong><span>${w.day}</span>`;
-        btn.onclick = () => {
-          state.activeTab = w.id;
-          saveState();
-          render();
-        };
-        tabsEl.appendChild(btn);
+        btn.onclick = () => { state.activeTab = w.id; saveState(); render(); };
+        mainTabs.appendChild(btn);
       });
 
-      const workout = WORKOUTS.find(w => w.id === state.activeTab);
-      document.getElementById("workoutFocus").textContent = workout.focus;
+      const subTabs = document.getElementById("subTabs");
+      subTabs.innerHTML = "";
+      const extras = [
+        { id: "run", title: "Løb", sub: "Kondition", cls: "" },
+        { id: "shoulder_rehab", title: "Skulder", sub: "Genoptræning", cls: "rehab" },
+        { id: "extra", title: "+ Ekstra", sub: "Fri dag", cls: "" }
+      ];
+      extras.forEach(item => {
+        const btn = document.createElement("button");
+        btn.className = `tab ${item.cls}` + (item.id === state.activeTab ? " active" : "");
+        btn.innerHTML = `<strong>${item.title}</strong><span>${item.sub}</span>`;
+        btn.onclick = () => { state.activeTab = item.id; saveState(); render(); };
+        subTabs.appendChild(btn);
+      });
+    }
 
-      let doneSets = 0;
-      let totalSets = 0;
+    function updateProgressCount(workout, isRehab) {
+      let done = 0, total = 0;
+      workout.exercises.forEach(ex => {
+        const sc = getSetCount(ex, isRehab);
+        const dr = (state.drafts[workout.id] && state.drafts[workout.id][ex.id]) || [];
+        total += sc;
+        done += dr.slice(0, sc).filter(s => s.done).length;
+      });
+      const el = document.getElementById("progressCount");
+      if (el) el.textContent = `${done} / ${total} sæt`;
+    }
 
-      const listEl = document.getElementById("exerciseList");
-      listEl.innerHTML = "";
+    function renderWorkoutView(workout, isRehab) {
+      const container = document.getElementById("mainContent");
+      container.innerHTML = "";
+
+      if (isRehab) {
+        const banner = document.createElement("div");
+        banner.className = "info-banner";
+        banner.innerHTML = `
+          <strong>Skulder-genoptræning (venstre skulder)</strong>
+          Hold smerte på maks. 2 til 3/10 under øvelsen og ingen forværring næste morgen. Start altid med venstre arm og match højre til venstre. Ved manglende bedring over 2 til 4 uger eller natlige smerter: få en fysioterapeutisk vurdering.
+        `;
+        container.appendChild(banner);
+      }
+
+      const meta = document.createElement("div");
+      meta.className = "workout-meta";
+      meta.innerHTML = `<span>${workout.focus}</span><span id="progressCount"></span>`;
+      container.appendChild(meta);
 
       workout.exercises.forEach(ex => {
-        const setCount = getSetCount(ex);
+        const setCount = getSetCount(ex, isRehab);
         const lastLog = getLastExerciseLog(ex.id);
-        const draft = getDraft(workout.id, ex.id, setCount, lastLog);
-        const readyUp = isReadyToProgress(ex, lastLog);
-
-        totalSets += setCount;
-        doneSets += draft.filter(s => s.done).length;
+        const draft = getDraft(workout.id, ex.id, setCount, lastLog, isRehab);
+        const readyUp = isReadyToProgress(ex, lastLog, isRehab);
 
         const card = document.createElement("div");
         card.className = "card";
 
-        const rirText = state.deload ? "RIR 3 til 4" : `RIR ${ex.rir}`;
+        const rirText = !isRehab && state.deload ? "RIR 3 til 4" : `RIR ${ex.rir}`;
         const restMin = Math.floor(ex.rest / 60);
         const restSec = ex.rest % 60;
-        const restLabel = restSec ? `${restMin}m ${restSec}s` : `${restMin} min`;
+        const restLabel = restMin ? (restSec ? `${restMin}m ${restSec}s` : `${restMin} min`) : `${restSec} sek`;
+        const repUnit = ex.unitLabel || "Reps";
 
         let badgesHtml = "";
         if (lastLog) {
@@ -1114,14 +1385,14 @@
           <div class="card-head">
             <div class="ex-name">
               <span>${ex.name}</span>
-              <button class="info-btn" title="Vis illustration og teknik" aria-label="Vis illustration">?</button>
+              <button class="info-btn" type="button" title="Vis illustration og teknik" aria-label="Vis illustration">?</button>
             </div>
-            <button class="rest-pill" data-rest="${ex.rest}" data-ex="${ex.name}">⏱ ${restLabel}</button>
+            <button class="rest-pill" type="button">⏱ ${restLabel}</button>
           </div>
-          <div class="ex-target">${setCount} sæt x ${ex.repMin} til ${ex.repMax} reps · ${rirText} · ${ex.note}</div>
+          <div class="ex-target">${setCount} sæt x ${ex.repMin} til ${ex.repMax} ${repUnit.toLowerCase()} · ${rirText} · ${ex.note}</div>
           ${badgesHtml ? `<div class="badges">${badgesHtml}</div>` : ""}
           <div class="set-grid-head">
-            <div>Sæt</div><div>Kg</div><div>Reps</div><div>RIR</div><div>OK</div>
+            <div>Sæt</div><div>Kg</div><div>${repUnit}</div><div>RIR</div><div>OK</div>
           </div>
         `;
 
@@ -1134,9 +1405,9 @@
           row.innerHTML = `
             <div class="set-num">${idx + 1}</div>
             <input type="text" inputmode="decimal" placeholder="kg" value="${s.weight}" aria-label="Vægt" />
-            <input type="text" inputmode="numeric" placeholder="${ex.repMin}-${ex.repMax}" value="${s.reps}" aria-label="Reps" />
-            <input type="text" inputmode="numeric" placeholder="${state.deload ? "3" : ex.rir}" value="${s.rir}" aria-label="RIR" />
-            <button class="check-btn" aria-label="Markér sæt færdig">✓</button>
+            <input type="text" inputmode="numeric" placeholder="${ex.repMin}-${ex.repMax}" value="${s.reps}" aria-label="${repUnit}" />
+            <input type="text" inputmode="numeric" placeholder="${!isRehab && state.deload ? "3" : ex.rir}" value="${s.rir}" aria-label="RIR" />
+            <button class="check-btn" type="button" aria-label="Markér sæt færdig">✓</button>
           `;
 
           const inputs = row.querySelectorAll("input");
@@ -1144,21 +1415,323 @@
           inputs[1].oninput = e => { state.drafts[workout.id][ex.id][idx].reps = e.target.value; saveState(); };
           inputs[2].oninput = e => { state.drafts[workout.id][ex.id][idx].rir = e.target.value; saveState(); };
 
+          // In-place toggle uden fuld DOM-genbygning (forhindrer iOS scroll-hop!)
           row.querySelector(".check-btn").onclick = () => {
+            if (document.activeElement && document.activeElement.tagName === "INPUT") {
+              document.activeElement.blur();
+            }
             const cur = state.drafts[workout.id][ex.id][idx];
             cur.done = !cur.done;
+            row.classList.toggle("done", cur.done);
             saveState();
-            render();
+            updateProgressCount(workout, isRehab);
             if (cur.done) startTimer(ex.rest, ex.name);
           };
 
           card.appendChild(row);
         });
 
-        listEl.appendChild(card);
+        container.appendChild(card);
       });
 
-      document.getElementById("progressCount").textContent = `${doneSets} / ${totalSets} sæt`;
+      updateProgressCount(workout, isRehab);
+
+      const finishBtn = document.createElement("button");
+      finishBtn.className = "finish-btn";
+      finishBtn.type = "button";
+      finishBtn.textContent = isRehab ? "Afslut og gem skulderpas" : "Afslut og gem pas";
+      finishBtn.onclick = () => {
+        const draft = state.drafts[workout.id] || {};
+        const logged = {};
+        let anyData = false;
+
+        workout.exercises.forEach(ex => {
+          const setCount = getSetCount(ex, isRehab);
+          const sets = (draft[ex.id] || []).slice(0, setCount).filter(s => s.done || (s.weight && s.reps));
+          if (sets.length) {
+            logged[ex.id] = sets.map(s => ({ weight: s.weight, reps: s.reps, rir: s.rir, done: true }));
+            anyData = true;
+          }
+        });
+
+        if (!anyData) {
+          showToast("Log mindst ét sæt før du gemmer");
+          return;
+        }
+
+        const today = new Date().toISOString().slice(0, 10);
+        state.history.push({
+          type: isRehab ? "rehab" : "strength",
+          date: today,
+          workoutId: workout.id,
+          workoutName: workout.name,
+          deload: !isRehab && state.deload,
+          exercises: logged
+        });
+
+        delete state.drafts[workout.id];
+        clearInterval(timerInterval);
+        document.getElementById("timerBar").classList.remove("visible");
+        saveState();
+        render();
+        showToast(`${workout.name} gemt (${today})`);
+      };
+      container.appendChild(finishBtn);
+    }
+
+    function calcPace(kmStr, minStr) {
+      const km = parseFloat(String(kmStr).replace(",", "."));
+      const mins = parseFloat(String(minStr).replace(",", "."));
+      if (!km || !mins || km <= 0 || mins <= 0) return "Indtast distance og tid for tempo";
+      const pace = mins / km;
+      const pMin = Math.floor(pace);
+      const pSec = Math.round((pace - pMin) * 60);
+      const secStr = pSec === 60 ? "00" : String(pSec).padStart(2, "0");
+      const finalMin = pSec === 60 ? pMin + 1 : pMin;
+      return `Gennemsnitstempo: ${finalMin}:${secStr} min/km`;
+    }
+
+    function renderRunView() {
+      const container = document.getElementById("mainContent");
+      const r = state.runDraft;
+      const today = new Date().toISOString().slice(0, 10);
+      if (!r.date) r.date = today;
+
+      container.innerHTML = `
+        <div class="card">
+          <div class="card-head"><div class="ex-name">Registrér løbepas</div></div>
+          <div class="ex-target">Gemmes i samme træningslog og Markdown-eksport.</div>
+          <div class="field">
+            <label for="runDate">Dato</label>
+            <input type="date" id="runDate" value="${r.date}" />
+          </div>
+          <div class="field-row">
+            <div class="field">
+              <label for="runKm">Distance (km)</label>
+              <input type="text" inputmode="decimal" id="runKm" placeholder="f.eks. 7,5" value="${r.km}" />
+            </div>
+            <div class="field">
+              <label for="runMins">Tid (minutter)</label>
+              <input type="text" inputmode="decimal" id="runMins" placeholder="f.eks. 42" value="${r.mins}" />
+            </div>
+          </div>
+          <div class="pace-box" id="paceBox">${calcPace(r.km, r.mins)}</div>
+          <div class="field">
+            <label for="runZone">Intensitet / type</label>
+            <select id="runZone">
+              <option value="Zone 2 (rolig)" ${r.zone === "Zone 2 (rolig)" ? "selected" : ""}>Zone 2 (rolig, samtaletempo)</option>
+              <option value="Tempo / Zone 3" ${r.zone === "Tempo / Zone 3" ? "selected" : ""}>Tempo / Zone 3</option>
+              <option value="Interval / Zone 4" ${r.zone === "Interval / Zone 4" ? "selected" : ""}>Interval / Zone 4</option>
+              <option value="Langtur" ${r.zone === "Langtur" ? "selected" : ""}>Langtur</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="runNote">Note (valgfrit: puls, ben, rute)</label>
+            <input type="text" id="runNote" placeholder="f.eks. Lette ben, gns. puls 138" value="${r.note}" />
+          </div>
+        </div>
+        <button class="finish-btn" id="saveRunBtn" type="button">Gem løbepas</button>
+      `;
+
+      const updatePace = () => {
+        document.getElementById("paceBox").textContent = calcPace(state.runDraft.km, state.runDraft.mins);
+      };
+
+      document.getElementById("runDate").oninput = e => { state.runDraft.date = e.target.value; saveState(); };
+      document.getElementById("runKm").oninput = e => { state.runDraft.km = e.target.value; saveState(); updatePace(); };
+      document.getElementById("runMins").oninput = e => { state.runDraft.mins = e.target.value; saveState(); updatePace(); };
+      document.getElementById("runZone").onchange = e => { state.runDraft.zone = e.target.value; saveState(); };
+      document.getElementById("runNote").oninput = e => { state.runDraft.note = e.target.value; saveState(); };
+
+      document.getElementById("saveRunBtn").onclick = () => {
+        if (document.activeElement) document.activeElement.blur();
+        if (!state.runDraft.km && !state.runDraft.mins) {
+          showToast("Indtast mindst distance eller tid");
+          return;
+        }
+        const entryDate = state.runDraft.date || today;
+        state.history.push({
+          type: "run",
+          date: entryDate,
+          workoutName: `Løb (${state.runDraft.zone})`,
+          km: state.runDraft.km,
+          mins: state.runDraft.mins,
+          zone: state.runDraft.zone,
+          pace: calcPace(state.runDraft.km, state.runDraft.mins),
+          note: state.runDraft.note
+        });
+        state.runDraft = { date: today, km: "", mins: "", zone: "Zone 2 (rolig)", note: "" };
+        saveState();
+        render();
+        showToast(`Løbepas gemt (${entryDate})`);
+      };
+    }
+
+    function renderExtraView() {
+      const container = document.getElementById("mainContent");
+      container.innerHTML = "";
+
+      const topCard = document.createElement("div");
+      topCard.className = "card";
+      topCard.innerHTML = `
+        <div class="card-head"><div class="ex-name">Ekstra træningsdag</div></div>
+        <div class="ex-target">Til ekstra pas i ugen (forstyrrer ikke dobbelt-progressionen på Dag 1 til 4).</div>
+        <div class="btn-row" style="margin-bottom:10px;">
+          <button class="action-btn" type="button" id="tplCoreBtn">+ Skabelon: Core & Bagskulder</button>
+          <button class="action-btn" type="button" id="tplArmBtn">+ Skabelon: Arme & Lægge</button>
+        </div>
+        <div class="add-ex-row">
+          <div class="field" style="margin:0;">
+            <label for="newExName">Tilføj valgfri øvelse</label>
+            <input type="text" id="newExName" placeholder="f.eks. Cable Row" />
+          </div>
+          <div class="field" style="margin:0;">
+            <label for="newExSets">Sæt</label>
+            <input type="text" inputmode="numeric" id="newExSets" value="3" />
+          </div>
+          <button class="icon-btn" type="button" id="addExBtn" style="height:42px;">Tilføj</button>
+        </div>
+        <div class="field" style="margin:0;">
+          <label for="extraNote">Note til passet (valgfrit)</label>
+          <input type="text" id="extraNote" placeholder="f.eks. Ekstra pas lørdag formiddag" value="${state.extraDraft.note || ""}" />
+        </div>
+      `;
+      container.appendChild(topCard);
+
+      const addExerciseToExtra = (name, setsCount) => {
+        const count = Math.max(1, Math.min(8, parseInt(setsCount, 10) || 3));
+        const sets = [];
+        for (let i = 0; i < count; i++) sets.push({ weight: "", reps: "", rir: "2", done: false });
+        state.extraDraft.exercises.push({ name, sets });
+        saveState();
+        renderExtraView();
+      };
+
+      topCard.querySelector("#addExBtn").onclick = () => {
+        const nameInput = topCard.querySelector("#newExName");
+        const setsInput = topCard.querySelector("#newExSets");
+        const nm = nameInput.value.trim();
+        if (!nm) { showToast("Skriv et øvelsesnavn først"); return; }
+        addExerciseToExtra(nm, setsInput.value);
+      };
+
+      topCard.querySelector("#tplCoreBtn").onclick = () => {
+        ["Face Pull / Reverse Pec Deck", "Pallof Press", "Planke / Ab Wheel"].forEach(n => addExerciseToExtra(n, 3));
+      };
+      topCard.querySelector("#tplArmBtn").onclick = () => {
+        ["Incline DB Curl", "Cable Triceps Pushdown", "Standing Calf Raise"].forEach(n => addExerciseToExtra(n, 3));
+      };
+      topCard.querySelector("#extraNote").oninput = e => {
+        state.extraDraft.note = e.target.value;
+        saveState();
+      };
+
+      state.extraDraft.exercises.forEach((ex, exIdx) => {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <div class="card-head">
+            <div class="ex-name">${ex.name}</div>
+            <button class="del-ex-btn" type="button">Fjern</button>
+          </div>
+          <div class="set-grid-head">
+            <div>Sæt</div><div>Kg</div><div>Reps</div><div>RIR</div><div>OK</div>
+          </div>
+        `;
+        card.querySelector(".del-ex-btn").onclick = () => {
+          state.extraDraft.exercises.splice(exIdx, 1);
+          saveState();
+          renderExtraView();
+        };
+
+        ex.sets.forEach((s, sIdx) => {
+          const row = document.createElement("div");
+          row.className = "set-row" + (s.done ? " done" : "");
+          row.innerHTML = `
+            <div class="set-num">${sIdx + 1}</div>
+            <input type="text" inputmode="decimal" placeholder="kg" value="${s.weight}" />
+            <input type="text" inputmode="numeric" placeholder="reps" value="${s.reps}" />
+            <input type="text" inputmode="numeric" placeholder="2" value="${s.rir}" />
+            <button class="check-btn" type="button">✓</button>
+          `;
+          const inputs = row.querySelectorAll("input");
+          inputs[0].oninput = e => { state.extraDraft.exercises[exIdx].sets[sIdx].weight = e.target.value; saveState(); };
+          inputs[1].oninput = e => { state.extraDraft.exercises[exIdx].sets[sIdx].reps = e.target.value; saveState(); };
+          inputs[2].oninput = e => { state.extraDraft.exercises[exIdx].sets[sIdx].rir = e.target.value; saveState(); };
+          row.querySelector(".check-btn").onclick = () => {
+            if (document.activeElement && document.activeElement.tagName === "INPUT") document.activeElement.blur();
+            const cur = state.extraDraft.exercises[exIdx].sets[sIdx];
+            cur.done = !cur.done;
+            row.classList.toggle("done", cur.done);
+            saveState();
+            if (cur.done) startTimer(90, ex.name);
+          };
+          card.appendChild(row);
+        });
+        container.appendChild(card);
+      });
+
+      const saveBtn = document.createElement("button");
+      saveBtn.className = "finish-btn";
+      saveBtn.type = "button";
+      saveBtn.textContent = "Afslut og gem ekstra dag";
+      saveBtn.onclick = () => {
+        if (document.activeElement) document.activeElement.blur();
+        const logged = {};
+        let anyData = false;
+        state.extraDraft.exercises.forEach(ex => {
+          const valid = ex.sets.filter(s => s.done || (s.weight && s.reps));
+          if (valid.length) {
+            logged[ex.name] = valid.map(s => ({ weight: s.weight, reps: s.reps, rir: s.rir, done: true }));
+            anyData = true;
+          }
+        });
+        if (!anyData && !state.extraDraft.note.trim()) {
+          showToast("Tilføj og log mindst én øvelse eller note");
+          return;
+        }
+        const today = new Date().toISOString().slice(0, 10);
+        state.history.push({
+          type: "extra",
+          date: today,
+          workoutName: "Ekstra dag",
+          note: state.extraDraft.note.trim(),
+          exercises: logged
+        });
+        state.extraDraft = { note: "", exercises: [] };
+        saveState();
+        renderExtraView();
+        showToast(`Ekstra dag gemt (${today})`);
+      };
+      container.appendChild(saveBtn);
+    }
+
+    function render() {
+      const isMainStrength = WORKOUTS.some(w => w.id === state.activeTab);
+      const deloadBar = document.getElementById("deloadBar");
+      const deloadToggle = document.getElementById("deloadToggle");
+      deloadBar.classList.toggle("hidden", !isMainStrength);
+      deloadToggle.checked = state.deload;
+      deloadBar.classList.toggle("active", state.deload);
+      document.getElementById("deloadTitle").textContent = state.deload
+        ? "Deload-uge aktiv (aflastning)"
+        : "Normaluge (Uge 2 til 6)";
+      document.getElementById("deloadDesc").textContent = state.deload
+        ? "Halv sætvolumen · Stop ved RIR 3 til 4 (kør kun 3 pas)"
+        : "Fuld sætvolumen · Dobbelt progression ved RIR 1 til 2";
+
+      renderNav();
+
+      if (isMainStrength) {
+        const workout = WORKOUTS.find(w => w.id === state.activeTab);
+        renderWorkoutView(workout, false);
+      } else if (state.activeTab === "shoulder_rehab") {
+        renderWorkoutView(SHOULDER_REHAB, true);
+      } else if (state.activeTab === "run") {
+        renderRunView();
+      } else if (state.activeTab === "extra") {
+        renderExtraView();
+      }
     }
 
     function beep() {
@@ -1229,42 +1802,12 @@
       render();
     };
 
-    document.getElementById("finishBtn").onclick = () => {
-      const workout = WORKOUTS.find(w => w.id === state.activeTab);
-      const draft = state.drafts[workout.id] || {};
-      const logged = {};
-      let anyData = false;
-
-      workout.exercises.forEach(ex => {
-        const setCount = getSetCount(ex);
-        const sets = (draft[ex.id] || []).slice(0, setCount).filter(s => s.done || (s.weight && s.reps));
-        if (sets.length) {
-          logged[ex.id] = sets.map(s => ({ weight: s.weight, reps: s.reps, rir: s.rir, done: true }));
-          anyData = true;
-        }
-      });
-
-      if (!anyData) {
-        showToast("Log mindst ét sæt før du gemmer");
-        return;
-      }
-
-      const today = new Date().toISOString().slice(0, 10);
-      state.history.push({
-        date: today,
-        workoutId: workout.id,
-        workoutName: workout.name,
-        deload: state.deload,
-        exercises: logged
-      });
-
-      delete state.drafts[workout.id];
-      clearInterval(timerInterval);
-      document.getElementById("timerBar").classList.remove("visible");
-      saveState();
-      render();
-      showToast(`${workout.name} gemt (${today})`);
-    };
+    function getExNameMap() {
+      const exMap = {};
+      WORKOUTS.forEach(w => w.exercises.forEach(e => exMap[e.id] = e.name));
+      SHOULDER_REHAB.exercises.forEach(e => exMap[e.id] = e.name);
+      return exMap;
+    }
 
     function renderHistory() {
       const list = document.getElementById("historyList");
@@ -1272,8 +1815,7 @@
         list.innerHTML = `<div class="history-item">Ingen gemte pas endnu.</div>`;
         return;
       }
-      const exMap = {};
-      WORKOUTS.forEach(w => w.exercises.forEach(e => exMap[e.id] = e.name));
+      const exMap = getExNameMap();
 
       list.innerHTML = "";
       [...state.history].reverse().forEach(item => {
@@ -1281,31 +1823,43 @@
         div.className = "history-item";
         const tag = item.deload ? " (Deload)" : "";
         let lines = `<strong><span>${item.workoutName}${tag}</span><span>${item.date}</span></strong>`;
-        Object.entries(item.exercises).forEach(([id, sets]) => {
-          const sTxt = sets.map(s => `${s.weight || "?"}kg x ${s.reps || "?"}${s.rir ? ` (RIR ${s.rir})` : ""}`).join(" · ");
-          lines += `<div class="history-ex">${exMap[id] || id}: ${sTxt}</div>`;
-        });
+        if (item.type === "run") {
+          lines += `<div class="history-ex">${item.km || "?"} km · ${item.mins || "?"} min · ${item.pace || ""}</div>`;
+          if (item.note) lines += `<div class="history-ex">Note: ${item.note}</div>`;
+        } else {
+          if (item.note) lines += `<div class="history-ex">Note: ${item.note}</div>`;
+          Object.entries(item.exercises || {}).forEach(([id, sets]) => {
+            const sTxt = sets.map(s => `${s.weight || "?"}kg x ${s.reps || "?"}${s.rir ? ` (RIR ${s.rir})` : ""}`).join(" · ");
+            lines += `<div class="history-ex">${exMap[id] || id}: ${sTxt}</div>`;
+          });
+        }
         div.innerHTML = lines;
         list.appendChild(div);
       });
     }
 
     function buildMarkdownExport() {
-      const exMap = {};
-      WORKOUTS.forEach(w => w.exercises.forEach(e => exMap[e.id] = e.name));
-      let md = `# Træningslog: Upper / Lower\n\nEksporteret: ${new Date().toISOString().slice(0, 10)}\n\n`;
+      const exMap = getExNameMap();
+      let md = `# Træningslog: Upper / Lower, Løb & Skulder\n\nEksporteret: ${new Date().toISOString().slice(0, 10)}\n\n`;
       [...state.history].reverse().forEach(item => {
         md += `## ${item.date}: ${item.workoutName}${item.deload ? " (Deload)" : ""}\n`;
-        Object.entries(item.exercises).forEach(([id, sets]) => {
-          const sTxt = sets.map(s => `${s.weight || "?"} kg x ${s.reps || "?"}${s.rir ? ` (RIR ${s.rir})` : ""}`).join(", ");
-          md += `- **${exMap[id] || id}:** ${sTxt}\n`;
-        });
+        if (item.type === "run") {
+          md += `- **Distance:** ${item.km || "?"} km\n- **Tid:** ${item.mins || "?"} min (${item.pace || ""})\n`;
+          if (item.note) md += `- **Note:** ${item.note}\n`;
+        } else {
+          if (item.note) md += `- **Note:** ${item.note}\n`;
+          Object.entries(item.exercises || {}).forEach(([id, sets]) => {
+            const sTxt = sets.map(s => `${s.weight || "?"} kg x ${s.reps || "?"}${s.rir ? ` (RIR ${s.rir})` : ""}`).join(", ");
+            md += `- **${exMap[id] || id}:** ${sTxt}\n`;
+          });
+        }
         md += "\n";
       });
       return md;
     }
 
     document.getElementById("historyBtn").onclick = () => {
+      if (document.activeElement) document.activeElement.blur();
       renderHistory();
       document.getElementById("historyModal").classList.add("open");
     };
@@ -1313,6 +1867,7 @@
       document.getElementById("historyModal").classList.remove("open");
     };
     document.getElementById("guideBtn").onclick = () => {
+      if (document.activeElement) document.activeElement.blur();
       document.getElementById("guideModal").classList.add("open");
     };
     document.getElementById("closeGuide").onclick = () => {
@@ -1355,6 +1910,8 @@
           const parsed = JSON.parse(reader.result);
           if (parsed && Array.isArray(parsed.history)) {
             state = parsed;
+            if (!state.extraDraft) state.extraDraft = { note: "", exercises: [] };
+            if (!state.runDraft) state.runDraft = { date: "", km: "", mins: "", zone: "Zone 2 (rolig)", note: "" };
             saveState();
             render();
             renderHistory();
